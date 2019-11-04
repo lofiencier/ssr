@@ -24,6 +24,6 @@ module.exports={
     },
     externals:{},
     plugins:[
-        new LoadablePlugin({filename:'../stat.json'}),
+        new LoadablePlugin(),
     ]
 }

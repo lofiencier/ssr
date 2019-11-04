@@ -7,7 +7,7 @@ const config = {
   entry:path.resolve('src/client/index.js'),
   output:{
     path:path.resolve(__dirname,'../dist/client'),
-    publicPath:'/',
+    publicPath:'client/',
     filename:'[name].js',
     chunkFilename:'js/[name].js'
   }

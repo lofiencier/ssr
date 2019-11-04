@@ -3,7 +3,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter,Switch,Route } from 'react-router-dom';
 import path from 'path';
-import routes from '../routes';
+import {matchRoutes} from 'react-router-config';
+import routes,{Routes} from '../routes';
 const app = express();
 
 import { ChunkExtractor } from '@loadable/server'
@@ -11,43 +12,47 @@ import { ChunkExtractor } from '@loadable/server'
 
 app.use(express.static('dist'));
 
-// const App = ({req}) =>{
-//   return <StaticRouter context={{}} location={req.path}>
-//     <Switch>
-//       {
-//         routes.map(i=><Route key={i.name} {...i} component={require(i.component).default} />)
-//       }
-//     </Switch>
-//   </StaticRouter>
-// }
+const App = ({req}) =>{
+  return <StaticRouter context={{}} location={req.path}>
+    <Switch>
+      {
+        routes.map((i)=><Route {...i} />)
+      }
+    </Switch>
+  </StaticRouter>
+}
 
-const statsFile = path.resolve('dist/stat.json');
+const statsFile = path.resolve('dist/client/loadable-stats.json');
 
-console.log('statsFile',statsFile);
+function loadComponents(branch) {
+  return Promise.all(
+    branch.map(({ route,...rest }) => {
+      if (route.component.load) {
+        return route.component.load();
+      }
+      return Promise.resolve();
+    })
+  );
+}
 
-const extractor = new ChunkExtractor({ statsFile });
-const { default: App } = extractor.requireEntrypoint()
+app.get('*',async (req,res)=>{
+  const branch = matchRoutes(routes, req.path);
+  const loadedComponents = await loadComponents(branch);
+  Promise.all(loadedComponents).then(async()=>{
+    const extractor = new ChunkExtractor({ statsFile });
+    const jsx = extractor.collectChunks(<App req={req}/>);
+    const scripts = extractor.getScriptElements();
 
-
-const jsx =(req)=> extractor.collectChunks(<App />);
-
-// You can now collect your script tags
-const scriptTags = extractor.getScriptTags() // or extractor.getScriptElements();
-
-// You can also collect your "preload/prefetch" links
-const linkTags = extractor.getLinkTags() // or extractor.getLinkElements();
-
-// And you can even collect your style tags (if you use "mini-css-extract-plugin")
-const styleTags = extractor.getStyleTags() // or extractor.getStyleElements();
-
-app.get('*',(req,res)=>{
-  res.send(render(jsx(req)));
+    res.send(render(jsx,scripts).replace(/\s{2,}/g,''));
+  })
 })
 
 app.listen(3000,()=>console.log('APP START'));
 
-const render = (component)=>{
-  const content = renderToString(component)
+const render = (component,scripts)=>{
+  const content = renderToString(component);
+  const src = renderToString(scripts);
+  console.log('src',src);
   return `
     <html>
       <head>
@@ -55,7 +60,7 @@ const render = (component)=>{
       </head>
       <body>
         <div id="root">${content}</div>
-        <script src="client/main.js"></script>
+        ${src}
       </body>
     </html>
   `

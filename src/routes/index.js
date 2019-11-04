@@ -1,22 +1,10 @@
-import React,{createElement} from 'react';
+import loadable from '@loadable/component';
+import {Route,Switch} from 'react-router-dom';
 
-export default [
-  {
-    name:'home',
-    path:'/',
-    component:'../pages/Home',
-    exact:true,
-  },
-  {
-    name:'login',
-    path:'/login',
-    component:'../pages/Login',
-    exact:true
-  },
-  {
-    name:'no',
-    path:'/no/:num',
-    component:'../pages/Home',
-    exact:true,
-  },
-]
+const Home = loadable(()=>import('../pages/Home'));
+
+export default [{
+  path:'/',
+  component:Home,
+  key:'home'
+}];
