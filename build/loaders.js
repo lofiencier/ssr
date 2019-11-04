@@ -1,0 +1,9 @@
+exports.babel=()=>({
+  test:/\.jsx?$/,
+  use:{
+      loader:'babel-loader',
+      options:{
+          cacheDirectory:'./.cache/babel',
+      }
+  }
+});
