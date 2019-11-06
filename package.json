@@ -1,0 +1,47 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "clean-webpack-plugin": "^3.0.0"
+  },
+  "devDependencies": {
+    "@loadable/babel-plugin": "^5.10.3",
+    "@loadable/component": "^5.10.3",
+    "@loadable/server": "^5.10.3",
+    "@loadable/webpack-plugin": "^5.7.1",
+    "axios": "^0.19.0",
+    "express": "^5.0.0-alpha.7",
+    "hpp": "^0.2.2",
+    "html-minifier": "^4.0.0",
+    "morgan": "^1.9.1",
+    "react": "^16.10.1",
+    "react-cookie": "1.0.5",
+    "react-dom": "^16.10.1",
+    "react-helmet-async": "^1.0.3",
+    "react-redux": "5.1.1",
+    "react-router-config": "5.1.1",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "serialize-javascript": "^2.1.0",
+    "serve-favicon": "^2.5.0",
+    "styled-components": "^4.4.0",
+    "styled-reset": "^4.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lofiencier/ssr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lofiencier/ssr/issues"
+  },
+  "homepage": "https://github.com/lofiencier/ssr#readme"
+}
