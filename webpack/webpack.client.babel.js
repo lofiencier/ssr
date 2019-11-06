@@ -1,6 +1,7 @@
 // import TerserPlugin from 'terser-webpack-plugin';
-import getModule from './getModule';
+import getModule from './getModules';
 import getClientPlugins from './getClientPlugins';
+import path from 'path';
 
 export default () => {
   return {
@@ -13,9 +14,10 @@ export default () => {
       './src/client.js',
     ],
     output: {
-      path: 'dist/client/',
+      path: path.resolve('dist/client/'),
       filename: `[name].js`,
-      // publicPath: 'server/',
+      publicPath: 'client/',
+      chunkFilename:'[id].js'
     },
     plugins: getClientPlugins(),
     optimization: {

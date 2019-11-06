@@ -1,10 +1,13 @@
 import express from 'express';
 import favicon from 'serve-favicon';
+import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import routes from 'routes';
 import path from 'path';
+import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import logger from 'morgan';
 
 import getHtmlString from './utils/getHtmlString';
 
@@ -35,28 +38,27 @@ const loadComponents = branch => {
   );
 };
 
-const statsFile = path.resolve('dist/server/loadable-stats.json');
+const statsFile = path.resolve('dist/client/loadable-stats.json');
+
+
 
 app.get('*', async(req,res)=>{
   const route = matchRoutes(routes,req.path);
   const loaded = await loadComponents(route);
-
-  Promise.all(loaded)
-    .then(async()=>{
-      const AppComponent =(
-        <StaticRouter>
-          <App />
-        </StaticRouter>
-      );
-      const extractor = new ChunkExtractor({ statsFile });
-      const jsx = extractor.collectChunks(AppComponent);
-      const scripts = extractor.getScriptElements();
-      const content = renderToString(jsx);
-      const htmlString = getHtmlString(content,scripts);
-
-      const document = `<!doctype html>${htmlString}`;
-      res.status(200).send(document);
-    })
+  const [{ route:{key}={}}]=(route||[]);
+  console.log('route',JSON.stringify(route));
+  const extractor = new ChunkExtractor({ statsFile,entrypoints:['main',key]});
+  const AppComponent =(
+    <StaticRouter extractor={extractor}>
+      <App />
+    </StaticRouter>
+  );
+  const jsx = extractor.collectChunks(AppComponent);
+  const scripts = extractor.getScriptElements();
+  const content = renderToString(jsx);
+  console.log('content',content);
+  const htmlString = getHtmlString(content,scripts);
+  res.status(200).send(htmlString);
 });
 
 app.listen(port, err => {

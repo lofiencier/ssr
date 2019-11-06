@@ -7,11 +7,12 @@ import App from './App';
 
 loadableReady().then(() => {
   if (root) {
-    ReactDOM.hydrate(
+    const html =ReactDOM.hydrate(
       <BrowserRouter>
         <App />
       </BrowserRouter>,
       root
     );
+    console.log('html',html);
   }
 });

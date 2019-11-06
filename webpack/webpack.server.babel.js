@@ -1,18 +1,19 @@
 import nodeExternals from 'webpack-node-externals';
-import getModule from './getModule';
+import getModule from './getModules';
 import getServerPlugins from './getServerPlugins';
 import path from 'path';
 
 export default () => {
   return {
-    mode: env,
+    mode: 'development',
     name: 'server',
     target: 'node',
     devtool: 'cheap-module-eval-source-map',
     entry: ['./src/server.js'],
     output: {
-      path: path.resolve('dist'),
-      filename: 'server.js',
+      publicPath:'server/',
+      path: path.resolve('dist/server/'),
+      filename: '[name].js',
       libraryTarget: 'commonjs2',
     },
     plugins: getServerPlugins(),

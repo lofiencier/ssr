@@ -1,6 +1,6 @@
 import webpack from 'webpack';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import LoadablePlugin from '@loadable/webpack-plugin';
 
 export default function getPlugins(isAnalyze) {

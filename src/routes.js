@@ -4,7 +4,7 @@ import loadable from '@loadable/component';
 export default [
   {
     path: '/',
-    component: loadable(()=>import(/* webpackPrefetch: true */ './pages/Home')),
+    component: loadable(()=>import(/* webpackChunkName: "home" */'./pages/Home')),
     key:"home",
     // routes: [
     //   {

@@ -2,7 +2,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { minify } from 'html-minifier';
 
-const getHtmlString=(content,scripts)=>{
+const getHtmlString=(content,scripts,preloadResorceElement)=>{
   const Html = <html>
     <head>
       <title>template</title>
