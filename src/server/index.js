@@ -4,7 +4,8 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter,Switch,Route } from 'react-router-dom';
 import path from 'path';
 import {matchRoutes} from 'react-router-config';
-import routes,{Routes} from '../routes';
+import routes from '../routes';
+import Routes from '../App';
 const app = express();
 
 import { ChunkExtractor } from '@loadable/server'
@@ -14,17 +15,15 @@ app.use(express.static('dist'));
 
 const App = ({req}) =>{
   return <StaticRouter context={{}} location={req.path}>
-    <Switch>
-      {
-        routes.map((i)=><Route {...i} />)
-      }
-    </Switch>
+    <Routes />
   </StaticRouter>
 }
 
 const statsFile = path.resolve('dist/client/loadable-stats.json');
+const nodeStatsFile = path.resolve('dist/server/loadable-stats.json');
 
 function loadComponents(branch) {
+  console.log('branch',branch);
   return Promise.all(
     branch.map(({ route,...rest }) => {
       if (route.component.load) {
@@ -38,21 +37,26 @@ function loadComponents(branch) {
 app.get('*',async (req,res)=>{
   const branch = matchRoutes(routes, req.path);
   const loadedComponents = await loadComponents(branch);
+  console.log('loadedComponents',loadedComponents);
   Promise.all(loadedComponents).then(async()=>{
     const extractor = new ChunkExtractor({ statsFile });
+    const nodeExtractor = new ChunkExtractor({ statsFile:nodeStatsFile,entrypoints:'Home' });
+    console.log('nodeExtrator',nodeExtractor);
+    const emt = nodeExtractor.requireEntrypoint();
+    console.log('entry:',emt);
     const jsx = extractor.collectChunks(<App req={req}/>);
-    const scripts = extractor.getScriptElements();
-
-    res.send(render(jsx,scripts).replace(/\s{2,}/g,''));
+    // const scripts = extractor.getScriptElements();
+    const tags = extractor.getScriptTags();
+    res.send(render(jsx,tags));
   })
 })
 
 app.listen(3000,()=>console.log('APP START'));
 
-const render = (component,scripts)=>{
+const render = (component,tags)=>{
   const content = renderToString(component);
-  const src = renderToString(scripts);
-  console.log('src',src);
+  const script = renderToString(tags);
+  console.log('script',script);
   return `
     <html>
       <head>
@@ -60,7 +64,7 @@ const render = (component,scripts)=>{
       </head>
       <body>
         <div id="root">${content}</div>
-        ${src}
+        ${tags}
       </body>
     </html>
   `

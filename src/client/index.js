@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
-import routes from '../routes';
 import { loadableReady,lazy } from '@loadable/component'
+import Routes from '../App';
 
 const App = () =>{
   return <BrowserRouter>
-    <Switch>
-      {
-        routes.map(i=><Route {...i} />)
-      }
-    </Switch>
+    <Routes />
   </BrowserRouter>
 };
 
