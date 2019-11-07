@@ -47,6 +47,7 @@ app.get('*', async(req,res)=>{
   const loaded = await loadComponents(route);
   
   const keys = route.map(i=>i.route && i.route.key);
+  console.log('route',route);
   console.log('keys',keys);
   const extractor = new ChunkExtractor({ statsFile,entrypoints:['main',...keys] });
 

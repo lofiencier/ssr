@@ -10,7 +10,7 @@ class App extends React.PureComponent{
     return <div>
       <button onClick={()=>console.log('你tm有毒啊')}>confirm</button>
       {
-        routes.map(i=><Route {...i} />)
+        renderRoutes(routes)
       }
     </div>
   }
