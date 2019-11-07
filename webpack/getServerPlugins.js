@@ -6,7 +6,7 @@ import LoadablePlugin from '@loadable/webpack-plugin';
 export default function getPlugins(isAnalyze) {
   return [
     new CleanWebpackPlugin(),
-    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    // new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     new LoadablePlugin(),
   ];
 }

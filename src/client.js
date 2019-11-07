@@ -13,6 +13,5 @@ loadableReady().then(() => {
       </BrowserRouter>,
       root
     );
-    console.log('html',html);
   }
 });

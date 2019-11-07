@@ -6,12 +6,24 @@ export default [
     path: '/',
     component: loadable(()=>import(/* webpackChunkName: "home" */'./pages/Home')),
     key:"home",
-    // routes: [
-    //   {
-    //     path: '/',
-    //     isLoggedIn: false,
-    //     component: Landing,
-    //   },
-    // ],
+    exact:true
+  },
+  {
+    path: '/empty',
+    component: loadable(()=>import(/* webpackChunkName: "empty" */'./pages/Empty')),
+    key:'empty',
+    exact:true
+  },
+  {
+    path: '/about',
+    component: loadable(()=>import(/* webpackChunkName: "about" */'./pages/About')),
+    key:'about',
+    exact:true
+  },
+  {
+    path: '/envy',
+    component: loadable(()=>import(/* webpackChunkName: "envy" */'./pages/Envy')),
+    key:'envy',
+    
   },
 ];

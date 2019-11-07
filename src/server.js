@@ -39,17 +39,19 @@ const loadComponents = branch => {
 };
 
 const statsFile = path.resolve('dist/client/loadable-stats.json');
-
+const nodeStatsFile = path.resolve('dist/server/loadable-stats.json');
 
 
 app.get('*', async(req,res)=>{
-  const route = matchRoutes(routes,req.path);
+  const route = matchRoutes(routes,req.path)||[];
   const loaded = await loadComponents(route);
-  const [{ route:{key}={}}]=(route||[]);
-  console.log('route',JSON.stringify(route));
-  const extractor = new ChunkExtractor({ statsFile,entrypoints:['main',key]});
+  
+  const keys = route.map(i=>i.route && i.route.key);
+  console.log('keys',keys);
+  const extractor = new ChunkExtractor({ statsFile,entrypoints:['main',...keys] });
+
   const AppComponent =(
-    <StaticRouter extractor={extractor}>
+    <StaticRouter location={req.path} context={{}}>
       <App />
     </StaticRouter>
   );
