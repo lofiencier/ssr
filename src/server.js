@@ -39,7 +39,7 @@ const loadComponents = branch => {
 };
 
 const statsFile = path.resolve('dist/client/loadable-stats.json');
-const nodeStatsFile = path.resolve('dist/server/loadable-stats.json');
+// const nodeStatsFile = path.resolve('dist/server/loadable-stats.json');
 
 
 app.get('*', async(req,res)=>{
@@ -57,10 +57,13 @@ app.get('*', async(req,res)=>{
     </StaticRouter>
   );
   const jsx = extractor.collectChunks(AppComponent);
+
   const scripts = extractor.getScriptElements();
+  const styles = extractor.getStyleElements();
+  console.log('styles',styles);
   const content = renderToString(jsx);
   console.log('content',content);
-  const htmlString = getHtmlString(content,scripts);
+  const htmlString = getHtmlString(content,scripts,styles);
   res.status(200).send(htmlString);
 });
 

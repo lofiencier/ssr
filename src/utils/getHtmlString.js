@@ -2,10 +2,11 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { minify } from 'html-minifier';
 
-const getHtmlString=(content,scripts,preloadResorceElement)=>{
+const getHtmlString=(content,scripts,styles)=>{
   const Html = <html>
     <head>
       <title>template</title>
+      {styles.map(link=>link)}
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{__html:content}}></div>

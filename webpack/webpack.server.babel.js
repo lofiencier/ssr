@@ -17,7 +17,7 @@ export default () => {
       libraryTarget: 'commonjs2',
     },
     plugins: getServerPlugins(),
-    module: getModule(),
+    module: getModule(true),
     node: {
       console: false,
       global: false,
