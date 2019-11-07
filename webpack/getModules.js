@@ -24,6 +24,12 @@ const less = (isServer)=>{
     ],
   }
 }
+const empty=()=>({
+  test:/\.less$/,
+  include:path.resolve('src'),
+  exclude:/node_moduels/,
+  use:'null-loader'
+})
 
 const lessLoader=()=>({
   loader:'less-loader',
@@ -53,7 +59,7 @@ export default function getModule(isServer) {
   return {
     rules: [
       babel(),
-      less(isServer),
+      isServer?empty():less(),
     ],
   };
 }

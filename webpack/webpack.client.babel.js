@@ -1,11 +1,11 @@
-// import TerserPlugin from 'terser-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import getModule from './getModules';
 import getClientPlugins from './getClientPlugins';
 import path from 'path';
 
 export default () => {
   return {
-    mode: 'development',
+    mode: 'production',
     name: 'client',
     target: 'web',
     cache: true,
@@ -17,15 +17,30 @@ export default () => {
       path: path.resolve('dist/client/'),
       filename: `[name].js`,
       publicPath: 'client/',
-      chunkFilename:'[id].js'
+      chunkFilename:'[name].js'
     },
     plugins: getClientPlugins(),
     optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: false,
+          terserOptions: {
+            ecma: 6,
+            compress: true,
+            output: {
+              comments: false,
+              beautify: false
+            }
+          }
+        }),
+      ],
       splitChunks: {
         name: 'vendors',
         chunks: 'initial',
       },
-      minimize: false,
     },
     module: getModule(),
     node: {

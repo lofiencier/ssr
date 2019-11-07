@@ -16,6 +16,6 @@ export default function getPlugins(isAnalyze) {
       canPrint: true
     }),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    new LoadablePlugin(),
+    // new LoadablePlugin(),
   ];
 }

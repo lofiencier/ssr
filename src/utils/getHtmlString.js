@@ -10,6 +10,7 @@ const getHtmlString=(content,scripts,styles)=>{
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{__html:content}}></div>
+      {/* <div dangerouslySetInnerHTML={{__html:scripts}}></div> */}
       {scripts}
     </body>
   </html>;

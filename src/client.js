@@ -5,7 +5,8 @@ import { loadableReady } from '@loadable/component';
 
 import App from './App';
 
-loadableReady().then(() => {
+loadableReady(()=>{
+  const root = document.getElementById('root');
   if (root) {
     console.log('html',document.documentElement.innerHTML);
     ReactDOM.hydrate(
@@ -16,4 +17,4 @@ loadableReady().then(() => {
     );
     console.log('html',document.documentElement.innerHTML);
   }
-});
+})

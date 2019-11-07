@@ -42,14 +42,15 @@ const statsFile = path.resolve('dist/client/loadable-stats.json');
 // const nodeStatsFile = path.resolve('dist/server/loadable-stats.json');
 
 
+
 app.get('*', async(req,res)=>{
   const route = matchRoutes(routes,req.path)||[];
+  // script补全？这loadable有问题啊
+
   const loaded = await loadComponents(route);
-  
-  const keys = route.map(i=>i.route && i.route.key);
-  console.log('route',route);
-  console.log('keys',keys);
-  const extractor = new ChunkExtractor({ statsFile,entrypoints:['main',...keys] });
+
+  const keys = ['main',...route.map(i=>i.route && i.route.key)];
+  const extractor = new ChunkExtractor({ statsFile, entrypoints:keys });
 
   const AppComponent =(
     <StaticRouter location={req.path} context={{}}>
@@ -59,10 +60,11 @@ app.get('*', async(req,res)=>{
   const jsx = extractor.collectChunks(AppComponent);
 
   const scripts = extractor.getScriptElements();
+  // const scriptTags = extractor.getScriptTags();
   const styles = extractor.getStyleElements();
-  console.log('styles',styles);
+
   const content = renderToString(jsx);
-  console.log('content',content);
+
   const htmlString = getHtmlString(content,scripts,styles);
   res.status(200).send(htmlString);
 });
