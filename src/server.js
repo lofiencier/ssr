@@ -57,15 +57,17 @@ app.get('*', async(req,res)=>{
       <App />
     </StaticRouter>
   );
+  // const entry = extractor.requireEntrypoint();
+  // console.log('entry',entry);
   const jsx = extractor.collectChunks(AppComponent);
 
-  const scripts = extractor.getScriptElements();
-  // const scriptTags = extractor.getScriptTags();
+  // const scripts = extractor.getScriptElements();
+  const scriptTags = extractor.getScriptTags().replace('>[]<',`>${JSON.stringify(keys)}<`);
   const styles = extractor.getStyleElements();
 
   const content = renderToString(jsx);
 
-  const htmlString = getHtmlString(content,scripts,styles);
+  const htmlString = getHtmlString(content,scriptTags,styles);
   res.status(200).send(htmlString);
 });
 

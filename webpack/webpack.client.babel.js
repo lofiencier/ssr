@@ -5,7 +5,7 @@ import path from 'path';
 
 export default () => {
   return {
-    mode: 'production',
+    mode: 'development',
     name: 'client',
     target: 'web',
     cache: true,
@@ -21,22 +21,22 @@ export default () => {
     },
     plugins: getClientPlugins(),
     optimization: {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: false,
-          terserOptions: {
-            ecma: 6,
-            compress: true,
-            output: {
-              comments: false,
-              beautify: false
-            }
-          }
-        }),
-      ],
+      minimize: false,
+      // minimizer: [
+      //   new TerserPlugin({
+      //     cache: true,
+      //     parallel: true,
+      //     sourceMap: false,
+      //     terserOptions: {
+      //       ecma: 6,
+      //       compress: true,
+      //       output: {
+      //         comments: false,
+      //         beautify: false
+      //       }
+      //     }
+      //   }),
+      // ],
       splitChunks: {
         name: 'vendors',
         chunks: 'initial',
