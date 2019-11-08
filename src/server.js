@@ -3,11 +3,14 @@ import favicon from 'serve-favicon';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+
 import { matchRoutes } from 'react-router-config';
 import routes from 'routes';
 import path from 'path';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import logger from 'morgan';
+import { Provider } from 'react-redux';
+import createStore from './store/createStore';
 
 import getHtmlString from './utils/getHtmlString';
 
@@ -48,19 +51,23 @@ app.get('*', async(req,res)=>{
   // script补全？这loadable有问题啊
 
   const loaded = await loadComponents(route);
+  // const routeWithLoadedComponent = getRouteWithLoaded(route,loaded);
 
   const keys = ['main',...route.map(i=>i.route && i.route.key)];
   const extractor = new ChunkExtractor({ statsFile, entrypoints:keys });
-
+  
+  const store = createStore();
+  console.log('store.getState()',store.getState());
   const AppComponent =(
-    <StaticRouter location={req.path} context={{}}>
-      <App />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.path} context={{}}>
+        <App />
+      </StaticRouter>
+    </Provider>
   );
-  // const entry = extractor.requireEntrypoint();
-  // console.log('entry',entry);
-  const jsx = extractor.collectChunks(AppComponent);
 
+  const jsx = extractor.collectChunks(AppComponent);
+  
   // const scripts = extractor.getScriptElements();
   const scriptTags = extractor.getScriptTags().replace('>[]<',`>${JSON.stringify(keys)}<`);
   const styles = extractor.getStyleElements();
