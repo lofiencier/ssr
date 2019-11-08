@@ -8,7 +8,7 @@
     "cross-env": "^6.0.3"
   },
   "scripts": {
-    "build:client": "cross-env NODE_ENV=production webpack --progress --env --config ./webpack/webpack.client.babel.js",
+    "build:client": "cross-env NODE_ENV=production webpack --progress --watch --env --config ./webpack/webpack.client.babel.js",
     "build:server": " cross-env NODE_ENV=production webpack --progress --watch --env --config ./webpack/webpack.server.babel.js",
     "start": "nodemon --watch dist --exec node dist/server/main.js"
   },
