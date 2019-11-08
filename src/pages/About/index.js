@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import { actions } from './store';
 import './index.less';
 import { getMessage } from './store';
 

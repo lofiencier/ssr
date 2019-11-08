@@ -3,6 +3,7 @@ import favicon from 'serve-favicon';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+
 import { matchRoutes } from 'react-router-config';
 import routes from 'routes';
 import path from 'path';
