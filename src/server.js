@@ -7,7 +7,7 @@ import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import routes from 'routes';
 import path from 'path';
-import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import { ChunkExtractor } from '@loadable/server';
 import logger from 'morgan';
 import { Provider }  from 'react-redux';
 import createStore from './store';
@@ -27,7 +27,8 @@ app.use(express.static('dist/',{
   }
 }));
 app.get('/user',(req,res)=>{
-  res.status(200).send({data:new Array(20).fill('').map((v,i)=>i)});
+  const { base=0 } = req.query;
+  res.status(200).send({data:new Array(20).fill('').map((v,i)=>i+Number(base))});
 });
 app.use(favicon('public/favicon.ico'));
 

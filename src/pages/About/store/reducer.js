@@ -1,8 +1,14 @@
 export const reducer = (initial={
   loading:''
 },action)=>{
-  return {
-    ...initial,
-    loading:action.payload
+  switch(action.type){
+    case "GET_MESSAGE_SUCCESS":
+      return {
+        ...initial,
+        loading:action.payload
+      }
+      break;
+    default:
+      return initial;
   }
 }
